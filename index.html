@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="Simple TIC ">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="manifest" href="/manifest.json">
+    <title>TIC TAC TOE GAME</title>
+</head>
+
+<body>
+
+    <div class="gameArea">
+        <div class="game-info">
+            <span class="turn">Player 1 turn</span>
+            <span class="score">Score: 0-0 </span>
+        </div>
+        <div class="board">
+            <div pos=0 class="active"></div>
+            <div pos=1></div>
+            <div pos=2></div>
+            <div pos=3 class="active"></div>
+            <div pos=4></div>
+            <div pos=5></div>
+            <div pos=6></div>
+            <div pos=7></div>
+            <div pos=8></div>
+        </div>
+    </div>
+
+    <div class="result-won">
+        <h2>Player <span class="player"></span> Won</h2>
+        <div class="score">
+            <h1>4-2</h1>
+        </div>
+        <h3 class="action-btn">continue</h3>
+    </div>
+
+
+    <script src="./app.js"></script>
+</body>
+
+</html>

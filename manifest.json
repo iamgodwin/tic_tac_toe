@@ -1,0 +1,8 @@
+{
+    "name": "TIC TAC TOE by Godwin Nicholas",
+    "short_name": "TIC TAC TOE Game",
+    "start_url": ".lindex.html",
+    "display": "standalone",
+    "background_color": "#0C6687",
+    "theme_color": "#0C6687"
+}

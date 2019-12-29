@@ -1,4 +1,4 @@
-
+// single player with cpu
 
 let GameState = {
     score: [0, 0],
@@ -6,7 +6,7 @@ let GameState = {
     turn: true,
     winner: false,
     last_winner: null,
-    music: true
+    music: true,
 }
 
 self.onload = () => {
@@ -46,6 +46,9 @@ function checkWinner(squares) {
     layout.forEach(e => {
         const [a, b, c] = e;
         if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+            // prevent clicks
+            board.style.pointerEvents = "none";
+
             const oldScore = GameState.score;
             switch (squares[a]) {
                 case "X":
@@ -57,9 +60,6 @@ function checkWinner(squares) {
                     GameState = newState;
                     break;
             }
-
-            // prevent clicks
-            board.style.pointerEvents = "none";
             // animateDome
             animateDom(a, b, c);
             return squares[a];
@@ -70,6 +70,26 @@ function checkWinner(squares) {
     });
 }
 
+
+// cpu play function
+function cpuPlay(pos) {
+
+    const dom_squares = document.querySelectorAll(".board div");
+    // first check for all null squares
+    let nullSquares = [];
+    GameState.squares.forEach((e, i) => {
+        if (e === null) {
+            nullSquares.push(i);
+        }
+    });
+
+    const cpuChoice = Math.floor(Math.random() * (nullSquares.length));
+    setTimeout(() => {
+        if (GameState.winner === false && GameState.turn === false) {
+            dom_squares[nullSquares[cpuChoice]].click();
+        }
+    }, 500);
+}
 
 // update dom
 function updateDom(target, pos) {
@@ -110,6 +130,9 @@ function clearSquares() {
         e.innerText = GameState.squares[e.getAttribute("pos")];
     });
     board.style.pointerEvents = "all";
+    if (GameState.turn == false) {
+        cpuPlay();
+    }
 }
 
 function checkBox() {
@@ -131,7 +154,8 @@ function Start() {
             GameState.turn ? (
                 newState = { ...GameState, "turn": !GameState.turn },
                 newState.squares[pos] = "X",
-                GameState = newState
+                GameState = newState,
+                setTimeout(() => cpuPlay())
             )
                 :
                 (

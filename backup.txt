@@ -1,0 +1,19 @@
+// cpu play function
+function cpuPlay(pos) {
+
+    const dom_squares = document.querySelectorAll(".board div");
+    // first check for all null squares
+    let nullSquares = [];
+    GameState.squares.forEach((e, i) => {
+        if (e === null) {
+            nullSquares.push(i);
+        }
+    });
+
+    const cpuChoice = Math.floor(Math.random() * (nullSquares.length));
+    setTimeout(() => {
+        if (GameState.winner === false && GameState.turn === false) {
+            dom_squares[nullSquares[cpuChoice]].click();
+        }
+    }, 500);
+}

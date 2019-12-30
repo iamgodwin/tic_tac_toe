@@ -9,6 +9,18 @@ let GameState = {
     music: true,
 }
 
+// dom layout
+let layout = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6]
+];
+
 self.onload = () => {
     Start();
     self.document.body.click();
@@ -26,22 +38,9 @@ self.document.body.addEventListener("click", () => {
     }
 });
 
-
-
-
+// checks if there is a winner
 function checkWinner(squares) {
     const board = document.querySelector(".board");
-    let layout = [
-        [0, 1, 2],
-        [3, 4, 5],
-        [6, 7, 8],
-        [0, 3, 6],
-        [1, 4, 7],
-        [2, 5, 8],
-        [0, 4, 8],
-        [2, 4, 6]
-    ];
-
     // check if entries in layout are same from squares
     layout.forEach(e => {
         const [a, b, c] = e;
@@ -75,6 +74,9 @@ function checkWinner(squares) {
 function cpuPlay(pos) {
 
     const dom_squares = document.querySelectorAll(".board div");
+    // checks if human has possible chance of winning
+    let targets = [];
+
     // first check for all null squares
     let nullSquares = [];
     GameState.squares.forEach((e, i) => {
@@ -83,11 +85,45 @@ function cpuPlay(pos) {
         }
     });
 
-    const cpuChoice = Math.floor(Math.random() * (nullSquares.length));
-    setTimeout(() => {
-        if (GameState.winner === false && GameState.turn === false) {
-            dom_squares[nullSquares[cpuChoice]].click();
+    let cpuChoice = null;
+
+    // loop through dom layout
+    layout.forEach((row, index) => {
+        const [a, b, c] = row;
+        const { squares } = GameState;
+        // checks if X is in squares in GameState
+        const canWin = [squares[a], squares[b], squares[c]].join("").match(/X/g)
+        // if there is possibiilty of human winning
+        if (canWin !== null) {
+            if (canWin.length === 2) {
+                row.forEach(e => {
+                    // adds possiblities to targets
+                    if (squares[e] === null) {
+                        targets.push(e);
+                    }
+                })
+            }
         }
+    });
+
+
+    setTimeout(() => {
+
+        // checks if there is possibility of human winnig and 
+        // try to prevent it
+        if (targets.length > 0) {
+            cpuChoice = targets[Math.floor(Math.random() * (targets.length))];
+            if (GameState.winner === false && GameState.turn === false) {
+                dom_squares[cpuChoice].click();
+            }
+
+        } else {
+            cpuChoice = Math.floor(Math.random() * (nullSquares.length));
+            if (GameState.winner === false && GameState.turn === false) {
+                dom_squares[nullSquares[cpuChoice]].click();
+            }
+        }
+
     }, 500);
 }
 
